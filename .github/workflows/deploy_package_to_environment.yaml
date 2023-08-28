@@ -10,7 +10,7 @@ on:
           general context (blueprint, run id, etc...)
         type: string
 jobs:
-  promote-to-staging:
+  deploy_package_to_environment:
     runs-on: ubuntu-latest
     steps:
       - name: Create a log message
@@ -24,8 +24,7 @@ jobs:
       - name: 'run Codefresh pipeline'
         uses: codefresh-io/codefresh-pipeline-runner@v5
         env:
-          PIPELINE_NAME: 'port-demo/promote-my-port-app'
-          TRIGGER_NAME: 'tags'
+          PIPELINE_NAME: 'port-idp/my_promote_pipeline'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
         id: run-pipeline          
       - name: Update action run status
