@@ -21,12 +21,16 @@ jobs:
           operation: PATCH_RUN
           runId: ${{fromJson(inputs.port_payload).context.runId}}
           logMessage: Starting promotion from QA to Staging
+      
       - name: 'run Codefresh pipeline'
-        uses: codefresh-io/codefresh-pipeline-runner@v5
+        uses: codefresh-io/codefresh-pipeline-runner@v7
+        with:
+          args: '-v PORT_PAYLOAD=${{ inputs.port_payload }}'
         env:
           PIPELINE_NAME: 'port-idp/my_promote_pipeline'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
         id: run-pipeline          
+      
       - name: Update action run status
         uses: port-labs/port-github-action@v1
         with:
