@@ -20,7 +20,8 @@ jobs:
           clientSecret: ${{ secrets.CLIENT_SECRET }}
           operation: PATCH_RUN
           runId: ${{fromJson(inputs.port_payload).context.runId}}
-          logMessage: Starting deployment of package => ${{fromJson(inputs.package).package}}
+          logMessage: Starting deployment of package 
+          # logMessage: Starting deployment of package => ${{fromJson(inputs.package).package}}
       
       - name: 'run Codefresh pipeline'
         uses: codefresh-io/codefresh-pipeline-runner@v7
@@ -39,4 +40,5 @@ jobs:
           operation: PATCH_RUN
           runId: ${{fromJson(inputs.port_payload).context.runId}}
           status: SUCCESS
-          logMessage: COMPLETED --> Deployment of package => ${{fromJson(inputs.package).package}}
+          # logMessage: COMPLETED --> Deployment of package => ${{fromJson(inputs.package).package}}
+          logMessage: COMPLETED Deployment of package
