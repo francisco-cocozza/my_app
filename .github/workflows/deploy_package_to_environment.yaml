@@ -49,23 +49,23 @@ jobs:
           logMessage: COMPLETED Deployment of package
 
 
-ONE_LINE_TEXT="This is a one-line text"
-          echo "ONE_LINE_TEXT_ENV_VAR=$ONE_LINE_TEXT" >> $GITHUB_ENV
+# ONE_LINE_TEXT="This is a one-line text"
+#           echo "ONE_LINE_TEXT_ENV_VAR=$ONE_LINE_TEXT" >> $GITHUB_ENV
           
-      - name: Using the previously defined environment variable
-        run: |
-          echo ${{ env.ONE_LINE_TEXT_ENV_VAR }}
+#       - name: Using the previously defined environment variable
+#         run: |
+#           echo ${{ env.ONE_LINE_TEXT_ENV_VAR }}
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
     
-      - name: Extract version from package.json
-        uses: sergeysova/jq-action@v2
-        id: version
-        with:
-          cmd: 'jq .version package.json -r'
+#       - name: Extract version from package.json
+#         uses: sergeysova/jq-action@v2
+#         id: version
+#         with:
+#           cmd: 'jq .version package.json -r'
       
-      - name: Show my version
-        run: 'echo "version ${{ steps.version.outputs.value }}"'
+#       - name: Show my version
+#         run: 'echo "version ${{ steps.version.outputs.value }}"'
