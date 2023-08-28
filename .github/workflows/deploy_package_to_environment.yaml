@@ -1,4 +1,4 @@
-name: Promote to Staging
+name: Deploy Package to an Environment
 on:
   workflow_dispatch:
     inputs:
