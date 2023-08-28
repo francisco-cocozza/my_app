@@ -20,7 +20,7 @@ jobs:
           clientSecret: ${{ secrets.CLIENT_SECRET }}
           operation: PATCH_RUN
           runId: ${{fromJson(inputs.port_payload).context.runId}}
-          logMessage: Starting promotion from QA to Staging
+          logMessage: Starting deployment of package => ${{fromJson(inputs.package).package}}
       
       - name: 'run Codefresh pipeline'
         uses: codefresh-io/codefresh-pipeline-runner@v7
@@ -39,4 +39,4 @@ jobs:
           operation: PATCH_RUN
           runId: ${{fromJson(inputs.port_payload).context.runId}}
           status: SUCCESS
-          logMessage: Promotion to Staging Complete
+          logMessage: COMPLETED --> Deployment of package => ${{fromJson(inputs.package).package}}
