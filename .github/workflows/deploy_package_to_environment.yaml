@@ -26,7 +26,7 @@ jobs:
       - name: 'run Codefresh pipeline'
         uses: codefresh-io/codefresh-pipeline-runner@v7
         with:
-          args: '-v PORT_PAYLOAD=${{ inputs.port_payload }}'
+          args: '-v PORT_PAYLOAD=${{ fromJson(inputs.port_payload).payload }}'
         env:
           PIPELINE_NAME: 'port-idp/my_promote_pipeline'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
