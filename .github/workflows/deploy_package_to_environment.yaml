@@ -23,9 +23,21 @@ jobs:
           logMessage: Starting deployment of package 
           # logMessage: Starting deployment of package => ${{fromJson(inputs.package).package}}
 
-      - run: |
+      - name: Extract section from Full Payload
+        id: payload_extractor
+        run: |
           echo '${{ inputs.port_payload }}' > full_payload.json
-          jq -c .payload full_payload.json
+          PAYLOAD=`jq -c .payload full_payload.json`
+          echo "PORT_MINIMAL_PAYLOAD=$PAYLOAD">> "$GITHUB_OUTPUT"
+
+      # - name: Set color
+      #   id: random-color-generator
+      #   run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+      # - name: Get color
+      #   env:
+      #     SELECTED_COLOR: ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}
+      #   run: echo "The selected color is $SELECTED_COLOR"
+
 
       # - name: 'extract minimal port payload'
       #   uses: sergeysova/jq-action@v2
@@ -36,7 +48,7 @@ jobs:
       - name: 'run Codefresh pipeline'
         uses: codefresh-io/codefresh-pipeline-runner@v7
         with:
-          args: '-v PORT_PAYLOAD=${{ inputs.port_payload  }}'
+          args: '-v PORT_PAYLOAD=${{ steps.payload_extractor.outputs.PORT_MINIMAL_PAYLOAD }}'
         env:
           PIPELINE_NAME: 'port-idp/my_promote_pipeline'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
