@@ -28,7 +28,7 @@ jobs:
         run: |
           echo '${{ inputs.port_payload }}' > full_payload.json
           PAYLOAD=`jq -c .payload full_payload.json`
-          echo "PORT_MINIMAL_PAYLOAD=$PAYLOAD">> "$GITHUB_OUTPUT"
+          echo "PORT_MINIMAL_PAYLOAD=$PAYLOAD" >> "$GITHUB_OUTPUT"
 
       # - name: Set color
       #   id: random-color-generator
