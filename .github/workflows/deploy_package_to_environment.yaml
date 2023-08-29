@@ -22,16 +22,18 @@ jobs:
           runId: ${{fromJson(inputs.port_payload).context.runId}}
           logMessage: Starting deployment of package 
           # logMessage: Starting deployment of package => ${{fromJson(inputs.package).package}}
-      - name: 'extract minimal port payload'
-        uses: sergeysova/jq-action@v2
-        id: minimal_payload
-        with:
-          cmd: 'echo "${{ inputs.port_payload }}" > my_json.json && jq -c .payload my_json.json'  
+
+      - run: echo ${{ inputs.port_payload }} 
+      # - name: 'extract minimal port payload'
+      #   uses: sergeysova/jq-action@v2
+      #   id: minimal_payload
+      #   with:
+      #     cmd: 'echo "${{ inputs.port_payload }}" > my_json.json && jq -c .payload my_json.json'  
 
       - name: 'run Codefresh pipeline'
         uses: codefresh-io/codefresh-pipeline-runner@v7
         with:
-          args: '-v PORT_PAYLOAD=${{ steps.minimal_payload.outputs.value }}'
+          args: '-v PORT_PAYLOAD=${{ inputs.port_payload  }}'
         env:
           PIPELINE_NAME: 'port-idp/my_promote_pipeline'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
