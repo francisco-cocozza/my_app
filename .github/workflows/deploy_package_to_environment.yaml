@@ -23,7 +23,10 @@ jobs:
           logMessage: Starting deployment of package 
           # logMessage: Starting deployment of package => ${{fromJson(inputs.package).package}}
 
-      - run: echo ${{ inputs.port_payload }} 
+      - run: |
+          echo ${{ inputs.port_payload }} > full_payload.json
+          jq -c .payload full_payload.json
+
       # - name: 'extract minimal port payload'
       #   uses: sergeysova/jq-action@v2
       #   id: minimal_payload
