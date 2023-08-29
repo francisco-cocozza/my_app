@@ -28,7 +28,7 @@ jobs:
         run: |
           echo '${{ inputs.port_payload }}' > full_payload.json
           ## THIS WORKS!
-          PAYLOAD=`jq -c .payload full_payload.json | base64 -w 0`
+          export PAYLOAD=`jq -c .payload full_payload.json | base64 -w 0`
           echo "PORT_MINIMAL_PAYLOAD=$PAYLOAD" >> "$GITHUB_OUTPUT"
 
       # - name: Set color
