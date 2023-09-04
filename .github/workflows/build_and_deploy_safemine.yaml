@@ -1,0 +1,89 @@
+name: Deploy Package to an Environment
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: string
+      port_payload:
+        required: true
+        description: Port's payload, including details for who triggered the action and
+          general context (blueprint, run id, etc...)
+        type: string
+jobs:
+  deploy_package_to_environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a log message
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.CLIENT_ID }}
+          clientSecret: ${{ secrets.CLIENT_SECRET }}
+          operation: PATCH_RUN
+          runId: ${{fromJson(inputs.port_payload).context.runId}}
+          logMessage: Starting deployment of package 
+          # logMessage: Starting deployment of package => ${{fromJson(inputs.package).package}}
+
+      - name: Extract section from Full Payload
+        id: payload_extractor
+        run: |
+          echo '${{ inputs.port_payload }}' > full_payload.json
+          ## THIS WORKS!
+          export PAYLOAD=`jq -c . full_payload.json | base64 -w 0`
+          echo "PORT_MINIMAL_PAYLOAD=$PAYLOAD" >> "$GITHUB_OUTPUT"
+
+      # - name: Set color
+      #   id: random-color-generator
+      #   run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+      # - name: Get color
+      #   env:
+      #     SELECTED_COLOR: ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}
+      #   run: echo "The selected color is $SELECTED_COLOR"
+
+
+      # - name: 'extract minimal port payload'
+      #   uses: sergeysova/jq-action@v2
+      #   id: minimal_payload
+      #   with:
+      #     cmd: 'echo "${{ inputs.port_payload }}" > my_json.json && jq -c .payload my_json.json'  
+
+      - name: 'run Codefresh pipeline'
+        uses: codefresh-io/codefresh-pipeline-runner@v7
+        with:
+          args: '-v PORT_PAYLOAD=${{ steps.payload_extractor.outputs.PORT_MINIMAL_PAYLOAD }}'
+        env:
+          PIPELINE_NAME: 'port-idp/my_promote_pipeline'
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+        id: run-pipeline          
+      
+      - name: Update action run status
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.CLIENT_ID }}
+          clientSecret: ${{ secrets.CLIENT_SECRET }}
+          operation: PATCH_RUN
+          runId: ${{fromJson(inputs.port_payload).context.runId}}
+          status: SUCCESS
+          # logMessage: COMPLETED --> Deployment of package => ${{fromJson(inputs.package).package}}
+          logMessage: COMPLETED Deployment of package
+
+
+# ONE_LINE_TEXT="This is a one-line text"
+#           echo "ONE_LINE_TEXT_ENV_VAR=$ONE_LINE_TEXT" >> $GITHUB_ENV
+          
+#       - name: Using the previously defined environment variable
+#         run: |
+#           echo ${{ env.ONE_LINE_TEXT_ENV_VAR }}
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+    
+#       - name: Extract version from package.json
+#         uses: sergeysova/jq-action@v2
+#         id: version
+#         with:
+#           cmd: 'jq .version package.json -r'
+      
+#       - name: Show my version
+#         run: 'echo "version ${{ steps.version.outputs.value }}"'
