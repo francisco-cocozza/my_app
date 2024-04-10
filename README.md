@@ -7,3 +7,4 @@ Versions:
 - 1.7.8
 
 - This is a new feature: abcd
+- Another feature: efgh
