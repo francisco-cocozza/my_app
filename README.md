@@ -6,4 +6,4 @@ Versions:
 - 1.7.5
 - 1.7.8
 
-- This is a new feature: abc
+- This is a new feature: abcd
