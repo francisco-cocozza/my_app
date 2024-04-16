@@ -9,3 +9,4 @@ Versions:
 - This is a new feature: abcd
 - Another feature: efgh
 - new feature from PR! a change to feature X
+- New feature Y2
