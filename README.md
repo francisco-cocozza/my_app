@@ -11,4 +11,4 @@ Versions:
 - new feature from PR! a change to feature X
 - New feature Y2. Fixing feature Y2
 - New feature Z4. Fix to feature Z4
-- New feature W1
+- New feature W1. Fixing W1 feature
