@@ -8,3 +8,4 @@ Versions:
 
 - This is a new feature: abcd
 - Another feature: efgh
+- new feature from PR!
